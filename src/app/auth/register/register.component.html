@@ -1,0 +1,55 @@
+
+
+
+<div class="content">
+
+    <div class="alert" *ngIf="isSignedUp; else signupForm">
+      Your registration is successful please login
+      <button mat-button color="light" routerLink="/login" title="Login"> <strong>Login</strong> </button>
+  </div>
+
+  <ng-template #signupForm>
+  <mat-card class="example-card">
+
+    <mat-card-header>
+      <mat-card-title>Register</mat-card-title>
+      <mat-card-subtitle>Please fill the fields</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-progress-bar mode="indeterminate" *ngIf="showSpinner"></mat-progress-bar>
+
+      <form class="example-form" (ngSubmit)="formRegister.form.valid && onSubmit()" #formRegister="ngForm" novalidate>
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input type="text" matInput placeholder="name" name="name" [(ngModel)]="form.name" #name="ngModel" required>
+        </mat-form-field> <br>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Username</mat-label>
+          <input type="text" matInput placeholder="username" name="username" [(ngModel)]="form.username" #username="ngModel" required>
+        </mat-form-field> <br>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input type="text" matInput placeholder="email" name="email" [(ngModel)]="form.email" #email="ngModel" required>
+        </mat-form-field> <br>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput placeholder="password" name="password" [(ngModel)]="form.password" #password="ngModel" required>
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit"> Register <mat-icon>supervisor_account</mat-icon></button>
+
+      </form>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <p style="margin-left: 10px">
+        All ready i have an account
+        <button mat-button color="primary" routerLink="/login"> Login <mat-icon>exit_to_app</mat-icon></button>
+      </p>
+    </mat-card-actions>
+  </mat-card>
+  </ng-template>
+</div>

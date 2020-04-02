@@ -1,0 +1,50 @@
+
+<div *ngIf='isLoggedIn; else loggedOut'>
+  <app-home></app-home>
+</div>
+
+
+<ng-template #loggedOut>
+<div class="content">
+  <div *ngIf="isLoginFailed" class="alert">
+    <p>Username or password not correct</p>
+  </div>
+
+    <mat-card class="example-card">
+
+        <mat-card-header>
+          <mat-card-title>Login</mat-card-title>
+          <mat-card-subtitle>Please fill the fields</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <mat-spinner [diameter]="34" class="example-margin" *ngIf="showSpinner"></mat-spinner>
+
+          <form class="example-form" (ngSubmit)="formLogin.form.valid && onSubmit()" #formLogin="ngForm" novalidate>
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Username</mat-label>
+              <input type="text" matInput placeholder="username" name="username"
+                     [(ngModel)]="form.username" #username="ngModel" required>
+            </mat-form-field> <br>
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput placeholder="password" name="password"
+                     [(ngModel)]="form.password" #password="ngModel" required>
+            </mat-form-field>
+            <button mat-raised-button color="accent" type="submit"> Login <mat-icon>exit_to_app</mat-icon></button>
+          </form>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <p style="margin-left: 10px">
+            I don't have an account
+            <button mat-button color="primary" routerLink="/register"> Register <mat-icon>supervisor_account</mat-icon> </button>
+          </p>
+
+        </mat-card-actions>
+      </mat-card>
+
+</div>
+</ng-template>
