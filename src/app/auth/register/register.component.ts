@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../AuthService';
 import {Router} from '@angular/router';
 import {LoginInfo} from '../LoginInfo';
 import {RegisterInfo} from '../RegisterInfo';
-import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
-import {ThemePalette} from '@angular/material/core';
+import {TokenStorageService} from '../TokenStorageService';
 
 @Component({
   selector: 'app-register',
@@ -19,15 +17,18 @@ export class RegisterComponent implements OnInit {
   showSpinner = false;
   isSignUpFailed = false;
   errorMessage = false;
-  rolesLength: number;
+  gender: any = {};
+  roles: string[] = [];
+  loginInfo: LoginInfo;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
-    this.authService.findAllUsers().subscribe(roles => {
-      this.rolesLength = roles.length;
-    });
+    this.gender = 'female';
+  }
+  setGender() {
+   this.form.gender = this.gender;
   }
 
   onSubmit() {
@@ -36,24 +37,50 @@ export class RegisterComponent implements OnInit {
       this.form.name,
       this.form.username,
       this.form.email,
-      this.form.password
+      this.form.password,
+      this.form.gender,
+      this.form.birthdate,
+      this.form.heightInCm,
+      this.form.currentWeight,
+      this.form.caloriesDaily
     );
 
-
-    this.authService.register(this.signUpInfo).subscribe(data => {
+    this.authService.register(this.signUpInfo).subscribe(signUpInfo => {
+      this.signUpInfo = signUpInfo;
       this.isSignedUp = true;
-      console.log('Register Successfully');
       this.showSpinner = false;
       this.isSignedUp = true;
       this.isSignUpFailed = false;
-      this.router.navigate(['/profile/', this.signUpInfo.id]);
+      console.log(this.signUpInfo);
+      this.loginInfo = new LoginInfo(
+        this.form.username,
+        this.form.password
+      );
+
+      this.authService.login(this.loginInfo).subscribe(loginInfo => {
+        this.tokenStorageService.saveToken(loginInfo.accessToken);
+        this.tokenStorageService.saveUsername(loginInfo.username);
+        this.tokenStorageService.saveAuthorities(loginInfo.authorities);
+        this.roles = this.tokenStorageService.getAuthorities();
+        this.router.navigate(['/profile/' + this.form.username]);
+      });
     }, error => {
       this.errorMessage = error.error.message;
       this.isSignUpFailed = true;
     });
   }
 
-  cancel() {
-    this.router.navigateByUrl('/login');
+
+
+  reset() {
+    this.form.name = '';
+    this.form.username = '';
+    this.form.email = '';
+    this.form.password = '';
+    this.form.gender = '';
+    this.form.birthdate = '';
+    this.form.heightInCm = '';
+    this.form.currentWeight = '';
+    this.form.caloriesDaily = '';
   }
 }

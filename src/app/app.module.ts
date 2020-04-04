@@ -18,6 +18,9 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatListModule} from '@angular/material/list';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,10 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     FormsModule,
     MatProgressSpinnerModule,
     MatListModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatStepperModule,
+    MatRadioModule,
+    MatFormFieldModule,
 
   ],
   schemas: [

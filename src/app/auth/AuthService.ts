@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LoginInfo} from './LoginInfo';
 import {Observable} from 'rxjs';
 import {RegisterInfo} from './RegisterInfo';
+import {ProfileInfo} from './ProfileInfo';
 
 
 const httpOptions = {
@@ -13,32 +14,29 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = 'http://localhost:8080/api/signin';
-  private signUpUrl = 'http://localhost:8080/api/signup';
-  private profileUrl = 'http://localhost:8080/api/users';
 
   constructor(private http: HttpClient) {}
 
   login(creadentials: LoginInfo): Observable<any> {
-    return this.http.post<any>(this.loginUrl, creadentials, httpOptions);
+    return this.http.post<any>('http://localhost:8082/api/auth/signin', creadentials, httpOptions);
   }
   register(info: RegisterInfo): Observable<RegisterInfo> {
-    return this.http.post<RegisterInfo>(this.signUpUrl, info, httpOptions);
+    return this.http.post<RegisterInfo>('http://localhost:8082/api/auth/signup', info, httpOptions);
   }
-  getUserById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.profileUrl}/id/${id}`);
+  findUserByUsername(username: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8082/api/auth/findUserByUsername/${username}`);
   }
-  getUserByUsername(username: string): Observable<any> {
-    return this.http.get<any>(`${this.profileUrl}/username/${username}`);
+  findUserById(id: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:8888/api/findUserById/${id}`);
   }
   updateUser(user: any, id: number): Observable<any> {
-    return this.http.put<any>(`${this.profileUrl}/update/${id}`, user);
+    return this.http.put<any>(`http://localhost:8888/api/updateUser/${id}`, user);
   }
   deleteUser(id: number) {
-    return this.http.delete(`${this.profileUrl}/delete/${id}`, { responseType: 'text' });
+    return this.http.delete(`http://localhost:8888/api/deleteUser/${id}`, { responseType: 'text' });
   }
-  findAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.profileUrl}/findAllUsers`);
+  findAllUsers(users: ProfileInfo): Observable<ProfileInfo[]> {
+    return this.http.get<ProfileInfo[]>(`http://localhost:8888/api/findAllUsers`);
   }
 
 }

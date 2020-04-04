@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
   form: any = {};
   isLoggedIn = false;
   isLoginFailed = false;
-  roles: string[] = [];
   loginInfo: LoginInfo;
   showSpinner = false;
 
@@ -21,10 +20,6 @@ export class LoginComponent implements OnInit {
               private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
-    if (this.tokenStorageService.getToken()) {
-      this.isLoggedIn = true;
-      this.roles = this.tokenStorageService.getAuthorities();
-    }
   }
 
   onSubmit() {
@@ -41,8 +36,7 @@ export class LoginComponent implements OnInit {
 
       this.isLoggedIn = true;
       this.isLoginFailed = false;
-      this.roles = this.tokenStorageService.getAuthorities();
-      this.router.navigate(['/profile/' + this.loginInfo.username]);
+      this.router.navigate(['/profile/' + this.form.username]);
 
     }, error => {
       this.isLoginFailed = true;

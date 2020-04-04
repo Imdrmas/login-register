@@ -6,5 +6,11 @@ export class ProfileInfo {
   name: string;
   email: string;
   admin: boolean;
+  gender: string;
+  password: string;
+  birthdate: any;
+  heightInCm: number;
+  currentWeight: number;
+  caloriesDaily: number;
   authorities: string[];
 }
