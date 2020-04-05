@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {LoginInfo} from '../LoginInfo';
 import {RegisterInfo} from '../RegisterInfo';
 import {TokenStorageService} from '../TokenStorageService';
+import {ProfileInfo} from '../ProfileInfo';
 
 @Component({
   selector: 'app-register',
@@ -20,12 +21,17 @@ export class RegisterComponent implements OnInit {
   gender: any = {};
   roles: string[] = [];
   loginInfo: LoginInfo;
+  profileInfo: ProfileInfo[];
+
 
   constructor(private authService: AuthService, private router: Router, private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
     this.gender = 'female';
+    this.authService.findAllUsers().subscribe(roles => {
+      this.profileInfo = roles;
+    });
   }
   setGender() {
    this.form.gender = this.gender;
@@ -45,13 +51,17 @@ export class RegisterComponent implements OnInit {
       this.form.caloriesDaily
     );
 
+    if (this.profileInfo.length >= 1) {
+      this.signUpInfo.role = ['admin'];
+    }
+
     this.authService.register(this.signUpInfo).subscribe(signUpInfo => {
       this.signUpInfo = signUpInfo;
       this.isSignedUp = true;
       this.showSpinner = false;
       this.isSignedUp = true;
       this.isSignUpFailed = false;
-      console.log(this.signUpInfo);
+
       this.loginInfo = new LoginInfo(
         this.form.username,
         this.form.password
@@ -62,7 +72,7 @@ export class RegisterComponent implements OnInit {
         this.tokenStorageService.saveUsername(loginInfo.username);
         this.tokenStorageService.saveAuthorities(loginInfo.authorities);
         this.roles = this.tokenStorageService.getAuthorities();
-        this.router.navigate(['/profile/' + this.form.username]);
+       // this.router.navigate(['/profile/' + this.form.username]);
       });
     }, error => {
       this.errorMessage = error.error.message;

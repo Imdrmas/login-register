@@ -35,8 +35,8 @@ export class AuthService {
   deleteUser(id: number) {
     return this.http.delete(`http://localhost:8888/api/deleteUser/${id}`, { responseType: 'text' });
   }
-  findAllUsers(users: ProfileInfo): Observable<ProfileInfo[]> {
-    return this.http.get<ProfileInfo[]>(`http://localhost:8888/api/findAllUsers`);
+  findAllUsers(): Observable<ProfileInfo[]> {
+    return this.http.get<ProfileInfo[]>(`http://localhost:8082/api/auth/findAllUsers`);
   }
 
 }

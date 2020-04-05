@@ -13,4 +13,5 @@ export class ProfileInfo {
   currentWeight: number;
   caloriesDaily: number;
   authorities: string[];
+  roles: any;
 }

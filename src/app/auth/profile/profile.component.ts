@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
     this.username = this.route.snapshot.params.username;
     this.authService.findUserByUsername(this.username).subscribe(info => {
       this.profileInfo = info;
+      console.log(this.profileInfo.authorities);
     });
   }
   logout() {

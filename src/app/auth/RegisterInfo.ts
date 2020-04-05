@@ -28,7 +28,7 @@ export class RegisterInfo {
     this.heightInCm = heightInCm;
     this.currentWeight = currentWeight;
     this.caloriesDaily = caloriesDaily;
-    this.role = ['admin'];
+    this.role = ['user'];
   }
 
 }
